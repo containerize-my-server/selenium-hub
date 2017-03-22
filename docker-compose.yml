@@ -1,0 +1,32 @@
+version: "2.0"
+services:
+  hub:
+    image: selenium/hub
+    restart: always
+    ports: 
+      - "4444:4444"
+    environment:
+      - GRID_TIMEOUT=10
+
+
+  firefox:
+    image: selenium/node-firefox
+    restart: always
+    links:
+      - hub
+    depends_on:
+      - hub
+    environment:
+      - "HUB_PORT_4444_TCP_ADDR=hub"
+      - "HUB_PORT_4444_TCP_PORT=4444"
+
+  chrome:
+    image: selenium/node-chrome
+    restart: always
+    links:
+      - hub
+    depends_on:
+      - hub
+    environment:
+      - "HUB_PORT_4444_TCP_ADDR=hub"
+      - "HUB_PORT_4444_TCP_PORT=4444"
